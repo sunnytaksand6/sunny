@@ -43,6 +43,10 @@
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
   </component>
+  <component name="Mediator1">
+    <implementation.mediator src="Mediators/Mediator1.mplan"/>
+    <componentType/>
+  </component>
   <wire>
     <source.uri>bpelprocess1_client_ep</source.uri>
     <target.uri>BPELProcess1/bpelprocess1_client</target.uri>
