@@ -15,6 +15,10 @@
           importType="wsdl"/>
   <import namespace="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2" location="WSDLs/BPELProcess2.wsdl"
           importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/bpel/workflow/taskService"
+          location="oramds:/soa/shared/workflow/TaskServiceInterface.wsdl" importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf" location="WSDLs/BPELProcess3fdf.wsdl"
+          importType="wsdl"/>
   <service name="bpelprocess1_client_ep" ui:wsdlLocation="WSDLs/BPELProcess1.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess1#wsdl.interface(BPELProcess1)"/>
     <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess1#wsdl.endpoint(bpelprocess1_client_ep/BPELProcess1_pt)"/>
@@ -22,6 +26,14 @@
   <service name="bpelprocess2_client_ep" ui:wsdlLocation="WSDLs/BPELProcess2.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2#wsdl.interface(BPELProcess2)"/>
     <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2#wsdl.endpoint(bpelprocess2_client_ep/BPELProcess2_pt)"/>
+  </service>
+  <service name="bpelprocess3fdf_client_ep" ui:wsdlLocation="WSDLs/BPELProcess3fdf.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.interface(BPELProcess3fdf)"
+                    callbackInterface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.interface(BPELProcess3fdfCallback)"/>
+    <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.endpoint(bpelprocess3fdf_client_ep/BPELProcess3fdf_pt)"/>
+    <callback>
+      <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.endpoint(bpelprocess3fdf_client_ep/BPELProcess3fdfCallback_pt)"/>
+    </callback>
   </service>
   <property name="productVersion" type="xs:string" many="false">12.2.1.4.0.190828</property>
   <property name="compositeID" type="xs:string" many="false">9506bea3-2bbd-4e7c-a15a-2319ff04782e</property>
@@ -47,6 +59,25 @@
     <implementation.mediator src="Mediators/Mediator1.mplan"/>
     <componentType/>
   </component>
+  <component name="Humantask1">
+    <implementation.workflow src="HumanTasks/Humantask1.task"/>
+    <componentType>
+      <service name="TaskService" ui:wsdlLocation="oramds:/soa/shared/workflow/TaskServiceInterface.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskService)"
+                        callbackInterface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskServiceCallback)"/>
+      </service>
+    </componentType>
+  </component>
+  <component name="BPELProcess3fdf" version="2.0">
+    <implementation.bpel src="BPEL/BPELProcess3fdf.bpel"/>
+    <componentType>
+      <service name="bpelprocess3fdf_client" ui:wsdlLocation="WSDLs/BPELProcess3fdf.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.interface(BPELProcess3fdf)"
+                        callbackInterface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess3fdf#wsdl.interface(BPELProcess3fdfCallback)"/>
+      </service>
+    </componentType>
+    <property name="bpel.config.oneWayDeliveryPolicy" type="xs:string" many="false">async.persist</property>
+  </component>
   <wire>
     <source.uri>bpelprocess1_client_ep</source.uri>
     <target.uri>BPELProcess1/bpelprocess1_client</target.uri>
@@ -54,5 +85,9 @@
   <wire>
     <source.uri>bpelprocess2_client_ep</source.uri>
     <target.uri>BPELProcess2/bpelprocess2_client</target.uri>
+  </wire>
+  <wire>
+    <source.uri>bpelprocess3fdf_client_ep</source.uri>
+    <target.uri>BPELProcess3fdf/bpelprocess3fdf_client</target.uri>
   </wire>
 </composite>
