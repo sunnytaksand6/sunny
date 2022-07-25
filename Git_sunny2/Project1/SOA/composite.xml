@@ -13,9 +13,15 @@
            xmlns:sca-ext="http://xmlns.oracle.com/sca/1.0-ext">
   <import namespace="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess1" location="WSDLs/BPELProcess1.wsdl"
           importType="wsdl"/>
+  <import namespace="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2" location="WSDLs/BPELProcess2.wsdl"
+          importType="wsdl"/>
   <service name="bpelprocess1_client_ep" ui:wsdlLocation="WSDLs/BPELProcess1.wsdl">
     <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess1#wsdl.interface(BPELProcess1)"/>
     <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess1#wsdl.endpoint(bpelprocess1_client_ep/BPELProcess1_pt)"/>
+  </service>
+  <service name="bpelprocess2_client_ep" ui:wsdlLocation="WSDLs/BPELProcess2.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2#wsdl.interface(BPELProcess2)"/>
+    <binding.ws port="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2#wsdl.endpoint(bpelprocess2_client_ep/BPELProcess2_pt)"/>
   </service>
   <property name="productVersion" type="xs:string" many="false">12.2.1.4.0.190828</property>
   <property name="compositeID" type="xs:string" many="false">9506bea3-2bbd-4e7c-a15a-2319ff04782e</property>
@@ -28,8 +34,21 @@
     </componentType>
     <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
   </component>
+  <component name="BPELProcess2" version="2.0">
+    <implementation.bpel src="BPEL/BPELProcess2.bpel"/>
+    <componentType>
+      <service name="bpelprocess2_client" ui:wsdlLocation="WSDLs/BPELProcess2.wsdl">
+        <interface.wsdl interface="http://xmlns.oracle.com/Git_sunny2/Project1/BPELProcess2#wsdl.interface(BPELProcess2)"/>
+      </service>
+    </componentType>
+    <property name="bpel.config.transaction" type="xs:string" many="false">required</property>
+  </component>
   <wire>
     <source.uri>bpelprocess1_client_ep</source.uri>
     <target.uri>BPELProcess1/bpelprocess1_client</target.uri>
+  </wire>
+  <wire>
+    <source.uri>bpelprocess2_client_ep</source.uri>
+    <target.uri>BPELProcess2/bpelprocess2_client</target.uri>
   </wire>
 </composite>
